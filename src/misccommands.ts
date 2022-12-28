@@ -102,6 +102,25 @@ export function attachMiscCommands(client: DiscordClient, databaseConnectionPool
     (interaction) => createReminder(interaction, databaseConnectionPool),
     "Sets a reminder"
   );
+  client.attachCommand(
+    "garfcouncil",
+    [
+      {
+        name: "subject",
+        description: "What emoji the garf council shall cast judgement upon.",
+        type: ApplicationCommandOptionType.String,
+        required: true,
+      },
+      {
+        name: "judgment",
+        description: "What emoji the garf council shall use to convey a verdict.",
+        type: ApplicationCommandOptionType.String,
+        required: true,
+      },
+    ],
+    garfCouncil,
+    "Passes judgment"
+  );
 }
 
 function orb(interaction: CommandInteraction): void {
@@ -187,6 +206,23 @@ async function prsWelcome(interaction: CommandInteraction): Promise<void> {
 
   interaction.reply({
     content: url,
+    allowedMentions: {
+      parse: [],
+    },
+  });
+}
+
+async function garfCouncil(interaction: CommandInteraction): Promise<void> {
+  const subject = interaction.options.getString("subject") || ":dinostuffy:";
+  const judgment = interaction.options.getString("judgment") || ":internetpoint:";
+
+  const council = `:black_large_square::black_large_square::garf::kinggarf::garf:
+:black_large_square::garf::black_large_square:${judgment}:black_large_square::garf:
+:garf::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::garf:
+:garf::black_large_square::black_large_square:${subject}:black_large_square::black_large_square::garf:`;
+
+  interaction.reply({
+    content: council,
     allowedMentions: {
       parse: [],
     },
